@@ -184,6 +184,8 @@ Ext.extend(Eletters.grid.Subscribers,MODx.grid.Grid,{
                 }
             });
         }
+        this.CreateSubscriberWindow.reset();
+        this.CreateSubscriberWindow.setValues({active: true});
         this.getGroups(0, 'eletters-window-subscriber-create', 'subscribergroups-create');
         this.CreateSubscriberWindow.show(e.target);
     }
@@ -218,13 +220,17 @@ Ext.extend(Eletters.grid.Subscribers,MODx.grid.Grid,{
 
                         if(groups.length > 0) {
                             Ext.each(groups, function(item, key) {
+                                        var isChecked = item.checked;
+                                        if (subscriberId == 0 && groups.length == 1) {
+                                            isChecked = true;
+                                        }
                                         Ext.getCmp(groupsId).add({
                                             xtype: 'checkbox',
                                             name: 'groups_'+item.id,
                                             boxLabel: item.name,
                                             hideLabel: true,
                                             inputValue: true,
-                                            checked: item.checked
+                                            checked: isChecked
                                         });
                             }, this);
                         }
@@ -281,6 +287,7 @@ function getSubscriberWindowObject(config, type) {
                     ,name: 'active'
                     /* ,width: 300 */
                     ,inputValue: 1
+                    ,checked: (type === 'create')
                 },{
                     xtype: 'textfield'
                     ,fieldLabel: _('eletters.subscribers.crm_id')
