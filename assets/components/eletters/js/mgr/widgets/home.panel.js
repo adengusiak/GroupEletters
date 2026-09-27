@@ -15,17 +15,17 @@ Eletters.panel.Home = function(config) {
                 ,border: true
                 ,items: [
                     {
-                        title: _('eletters.groups')
-                        ,defaults: { autoHeight: true }
-                        ,items: [{
-                            xtype: 'eletters-grid-groups'
-                            ,preventRender: true
-                        }]
-                    },{
                         title: _('eletters.subscribers')
                         ,defaults: { autoHeight: true }
                         ,items: [{
                             xtype: 'eletters-grid-subscribers'
+                            ,preventRender: true
+                        }]
+                    },{
+                        title: _('eletters.groups')
+                        ,defaults: { autoHeight: true }
+                        ,items: [{
+                            xtype: 'eletters-grid-groups'
                             ,preventRender: true
                         }]
                     },{
