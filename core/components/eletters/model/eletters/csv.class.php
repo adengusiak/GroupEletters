@@ -205,12 +205,15 @@ class CSV {
 		$this->import_columns = 0;
 		$this->import_rows = 0;
         
-        ini_set('auto_detect_line_endings', $this->auto_detect);
+        // Note: ini_set('auto_detect_line_endings') was removed in PHP 8.1.
+        // Modern PHP/fgetcsv handles various line endings natively.
         // get the header for the first row
 		if( $handle = fopen($file, "r") ){
-		    if (stream_filter_register("utf8encode", "utf8encode_filter") ){
-                stream_filter_prepend($handle, "utf8encode"); 
-            }
+		    // Register the filter only if not yet registered (PHP 8 emits a warning on duplicate registration)
+		    if (!in_array('utf8encode', stream_get_filters())) {
+		        stream_filter_register("utf8encode", "utf8encode_filter");
+		    }
+		    stream_filter_prepend($handle, "utf8encode");
             
 			//echo '<br>CSV GET';
 			$this->columns = array();

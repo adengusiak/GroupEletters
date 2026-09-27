@@ -20,8 +20,8 @@ class Eletters {
      * @param modX &$modx A reference to the modX object
      * @param array $config An array of configuration options
      */
-    function __construct(modX &$modx,array $config = array()) {
-        $this->modx =& $modx;
+    function __construct(modX $modx, array $config = array()) {
+        $this->modx = $modx;
 
         $basePath = $this->modx->getOption('eletters.core_path',$config,$this->modx->getOption('core_path').'components/eletters/');
         $assetsUrl = $this->modx->getOption('eletters.assets_url',$config,$this->modx->getOption('assets_url').'components/eletters/');
@@ -740,10 +740,11 @@ class Eletters {
         $properties['reply_to_address'] = $this->newsletter->get('reply_to');
         // add any attachments
         // @TODO Review:
+        $decodedAttachments = json_decode($this->newsletter->get('attachments'), true) ?? [];
         if ( isset($attachments['files']) ) {
-            $attachments['files'] = array_merge(json_decode($this->newsletter->get('attachments'), true), $attachments['files']);
+            $attachments['files'] = array_merge($decodedAttachments, $attachments['files']);
         } else {
-            $attachments['files'] = json_decode($this->newsletter->get('attachments'), true);
+            $attachments['files'] = $decodedAttachments;
         }
         // $properties['message'] = $this->newsletter->getELetter($fields);
         return TRUE;
@@ -929,7 +930,7 @@ class Eletters {
                 $names[$i] = '';
             }
             //$emails[$i] = $hook->_process($emails[$i], $fields);
-            $this->modx->mail->address('to',$emails[$i], $names[$i]);
+            $this->modx->mail->address($type, $emails[$i], $names[$i]);
         }
     }
     

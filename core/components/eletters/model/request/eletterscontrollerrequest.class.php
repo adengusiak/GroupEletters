@@ -1,5 +1,8 @@
 <?php
-require_once MODX_CORE_PATH . 'model/modx/modrequest.class.php';
+// MODX 2.x: modrequest is loaded by autoloader in MODX 2.3+
+if (file_exists(MODX_CORE_PATH . 'model/modx/modrequest.class.php')) {
+    require_once MODX_CORE_PATH . 'model/modx/modrequest.class.php';
+}
 /**
  * Encapsulates the interaction of MODx manager with an HTTP request.
  *
@@ -12,9 +15,9 @@ class ElettersControllerRequest extends modRequest {
     public $actionVar = 'action';
     public $defaultAction = 'index';
 
-    function __construct(Eletters &$eletters) {
-        parent :: __construct($eletters->modx);
-        $this->eletters =& $eletters; 
+    function __construct(Eletters $eletters) {
+        parent::__construct($eletters->modx);
+        $this->eletters = $eletters;
     }
 
     /**

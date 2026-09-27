@@ -53,7 +53,7 @@ if($doc = $modx->getObject('modResource', $scriptProperties['resource'])) {
         if(count($sendToGroups)) {
             $c = $modx->newQuery('dnSubscriber');
             $c->leftJoin('dnGroupSubscribers', 'Groups');
-            $c->where('Groups.group IN('.implode($sendToGroups, ',').')');
+            $c->where('Groups.group IN('.implode(',', $sendToGroups).')');
             $c->andCondition(array('dnSubscriber.active' => 1));
             $subscribers = $modx->getCollection('dnSubscriber' , $c);
             foreach($subscribers as $subscriber) {

@@ -560,7 +560,12 @@ class CSSToInlineStyles
 		}
 
 		// sort based on specifity
-		if(!empty($this->cssRules)) usort($this->cssRules, array('CSSToInlineStyles', 'sortOnSpecifity'));
+		if(!empty($this->cssRules)) usort($this->cssRules, function($e1, $e2) {
+			if(!isset($e1['specifity']) || !isset($e2['specifity'])) return 0;
+			if($e1['specifity'] < $e2['specifity']) return -1;
+			if($e1['specifity'] > $e2['specifity']) return 1;
+			return 0;
+		});
 	}
 
 

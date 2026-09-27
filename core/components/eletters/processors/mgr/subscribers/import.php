@@ -88,7 +88,7 @@ if (!empty($_FILES['csv']['name']) && !empty($_FILES['csv']['tmp_name'])) {
                 $error = '';
                 if ($validator->hasMessages()) {
                     foreach ($validator->getMessages() as $message) {
-                        $this->addFieldError($message['field'],$this->modx->lexicon($message['message']));
+                        $modx->log(modX::LOG_LEVEL_ERROR, $modx->lexicon($message['message']));
                         if (!empty($error)) {
                             $error .= PHP_EOL.str_pad(' ', 20);
                         }

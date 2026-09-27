@@ -21,8 +21,8 @@ class EletterTracking {
      *
      * @param modX &$modx A reference to the modX object
      */
-    function __construct(modX &$modx ) {
-        $this->modx =& $modx;
+    function __construct(modX $modx) {
+        $this->modx = $modx;
 		
 	}
     /**

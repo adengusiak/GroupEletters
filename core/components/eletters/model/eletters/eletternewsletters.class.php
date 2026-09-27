@@ -243,7 +243,7 @@ class EletterNewsletters extends xPDOSimpleObject {
         $this->modx->mail->address('reply-to', $this->get('reply_to'));
         $this->modx->mail->setHTML(true);
         // attachments:
-        $attachments = json_decode($this->get('attachments'));
+        $attachments = json_decode($this->get('attachments')) ?? [];
         foreach ( $attachments as $attachment ) {
             if ( !file_exists(MODX_BASE_PATH.DIRECTORY_SEPARATOR.$attachment) ) {
                 continue;
@@ -371,9 +371,9 @@ class EletterNewsletters extends xPDOSimpleObject {
             $files = explode(',', $tempCss);
             foreach ($files as $file) {
                 $file = str_replace('{assets_path}', $cssBasePath, $file);
-                $tempCss = file_get_contents($cssFile);
-                if ( !empty($tempCss) ) {
-                    $cssStyles .= $tempCss;
+                $cssFileContent = file_get_contents($file);
+                if ( !empty($cssFileContent) ) {
+                    $cssStyles .= $cssFileContent;
                 }
             }
         }
@@ -404,11 +404,13 @@ class EletterNewsletters extends xPDOSimpleObject {
         // Make full URLs:
         $baseUrl = ''; 
         $dom = new DOMDocument('1.0', 'utf-8');
+        libxml_use_internal_errors(true);
         $dom->loadHTML($html);
         if ( is_object($dom) ) {
             //$site_url = $dom->getElementsByTagName('base')->item(0)->getAttribute('href');
             //get site_url from base tag or default MODX setting
             $base = $dom->getElementsByTagName('base');
+            $baseItem = null;
             if (is_object($base)){
                 $baseItem = $base->item(0);
             }
